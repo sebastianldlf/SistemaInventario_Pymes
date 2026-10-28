@@ -1,0 +1,65 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+model Category {
+  id          String    @id @default(uuid())
+  name        String    @unique
+  products    Product[]
+}
+
+model Warehouse {
+  id          String           @id @default(uuid())
+  code        String           @unique
+  name        String
+  stocks      WarehouseStock[]
+  movements   KardexEntry[]
+}
+
+model Product {
+  id            String           @id @default(uuid())
+  sku           String           @unique
+  barcode       String?          @unique
+  name          String
+  unitOfMeasure String           @default("UND")
+  minStock      Decimal          @default(0)
+  averageCost   Decimal          @default(0)
+  salePrice     Decimal          @default(0)
+  categoryId    String
+  category      Category         @relation(fields: [categoryId], references: [id])
+  stocks        WarehouseStock[]
+  kardexEntries KardexEntry[]
+}
+
+model WarehouseStock {
+  id              String    @id @default(uuid())
+  productId       String
+  warehouseId     String
+  currentQuantity Decimal   @default(0)
+  product         Product   @relation(fields: [productId], references: [id])
+  warehouse       Warehouse @relation(fields: [warehouseId], references: [id])
+  @@unique([productId, warehouseId])
+}
+
+model KardexEntry {
+  id               String       @id @default(uuid())
+  productId        String
+  warehouseId      String
+  movementType     String       // PURCHASE_RECEIPT, SALE_DISPATCH, ADJUSTMENT
+  quantity         Decimal      // Positivo (+) o Negativo (-)
+  unitCost         Decimal
+  totalCost        Decimal
+  balanceQuantity  Decimal
+  balanceUnitCost  Decimal
+  balanceTotalCost Decimal
+  referenceNote    String?
+  createdAt        DateTime     @default(now())
+  product          Product      @relation(fields: [productId], references: [id])
+  warehouse        Warehouse    @relation(fields: [warehouseId], references: [id])
+}

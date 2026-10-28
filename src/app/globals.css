@@ -1,0 +1,39 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 0 0% 100%;
+    --foreground: 240 6% 10%;
+    --muted: 240 5% 96%;
+    --muted-foreground: 240 4% 46%;
+    --border: 240 6% 90%;
+    --input: 240 6% 86%;
+    --ring: 240 5% 34%;
+    --primary: 240 6% 10%;
+    --primary-foreground: 0 0% 98%;
+    --destructive: 0 72% 45%;
+  }
+  .dark {
+    --background: 240 10% 4%;
+    --foreground: 0 0% 96%;
+    --muted: 240 4% 10%;
+    --muted-foreground: 240 5% 65%;
+    --border: 240 4% 16%;
+    --input: 240 4% 20%;
+    --ring: 240 5% 65%;
+    --primary: 0 0% 96%;
+    --primary-foreground: 240 6% 10%;
+    --destructive: 0 72% 55%;
+  }
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground font-sans text-[13px] antialiased;
+  }
+  svg.lucide {
+    stroke-width: 1.5;
+  }
+}

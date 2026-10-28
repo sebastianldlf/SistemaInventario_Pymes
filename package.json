@@ -1,0 +1,53 @@
+{
+  "name": "sistema-inventario-pymes",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "prisma generate && next build",
+    "start": "next start",
+    "lint": "next lint",
+    "postinstall": "prisma generate",
+    "db:push": "prisma db push",
+    "db:migrate": "prisma migrate dev",
+    "db:seed": "tsx prisma/seed.ts",
+    "test": "vitest run",
+    "cypress:open": "cypress open",
+    "cypress:run": "cypress run",
+    "test:selenium": "tsx tests/selenium/inventario.spec.ts"
+  },
+  "prisma": {
+    "seed": "tsx prisma/seed.ts"
+  },
+  "dependencies": {
+    "@prisma/client": "^5.22.0",
+    "@radix-ui/react-dialog": "^1.1.2",
+    "class-variance-authority": "^0.7.0",
+    "clsx": "^2.1.1",
+    "lucide-react": "^0.460.0",
+    "next": "^14.2.18",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "tailwind-merge": "^2.5.4",
+    "zod": "^3.23.8"
+  },
+  "devDependencies": {
+    "@types/node": "^26.6.5",
+    "@types/react": "^18.3.12",
+    "@types/react-dom": "^18.3.1",
+    "@types/selenium-webdriver": "^4.35.7",
+    "@vitejs/plugin-react": "^6.1.2",
+    "autoprefixer": "^10.4.20",
+    "chromedriver": "^156.0.0",
+    "cypress": "^16.2.1",
+    "postcss": "^8.4.49",
+    "prisma": "^5.22.0",
+    "selenium-webdriver": "^4.51.0",
+    "tailwindcss": "^3.4.15",
+    "ts-node": "^10.9.2",
+    "tsx": "^4.19.2",
+    "typescript": "^5.6.3",
+    "vite-tsconfig-paths": "^6.1.1",
+    "vitest": "^5.0.5"
+  }
+}
