@@ -1,25 +1,22 @@
-import { cva, type VariantProps } from "class-variance-authority";
 import { cn } from "@/lib/utils";
 
-const badgeVariants = cva(
-  "inline-flex items-center gap-1 rounded-sm border px-1.5 py-px text-[11px] font-medium leading-4",
-  {
-    variants: {
-      variant: {
-        neutral: "border-border bg-muted text-muted-foreground",
-        ok: "border-emerald-600/25 bg-emerald-50 text-emerald-800 dark:bg-emerald-950 dark:text-emerald-300",
-        warn: "border-amber-600/30 bg-amber-50 text-amber-800 dark:bg-amber-950 dark:text-amber-300",
-        danger: "border-red-600/30 bg-red-50 text-red-800 dark:bg-red-950 dark:text-red-300",
-      },
-    },
-    defaultVariants: { variant: "neutral" },
-  },
-);
+const dot = {
+  neutral: "bg-zinc-400",
+  ok: "bg-emerald-500",
+  warn: "bg-amber-500",
+  danger: "bg-red-500",
+} as const;
 
 export function Badge({
   className,
-  variant,
+  variant = "neutral",
+  children,
   ...props
-}: React.HTMLAttributes<HTMLSpanElement> & VariantProps<typeof badgeVariants>) {
-  return <span className={cn(badgeVariants({ variant }), className)} {...props} />;
+}: React.HTMLAttributes<HTMLSpanElement> & { variant?: keyof typeof dot }) {
+  return (
+    <span className={cn("inline-flex items-center gap-2 text-[13px] text-foreground/80", className)} {...props}>
+      <span aria-hidden className={cn("h-1.5 w-1.5 rounded-full", dot[variant])} />
+      {children}
+    </span>
+  );
 }

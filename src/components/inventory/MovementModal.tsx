@@ -83,18 +83,18 @@ function MovementForm({
   }
 
   const err = (k: string) =>
-    fieldErrors[k]?.[0] ? <p className="mt-1 text-xs text-destructive">{fieldErrors[k]![0]}</p> : null;
+    fieldErrors[k]?.[0] ? <p className="mt-1.5 text-xs text-destructive">{fieldErrors[k]![0]}</p> : null;
 
   return (
-    <form onSubmit={onSubmit} className="space-y-3">
-      <div>
-        <DialogTitle className="text-sm font-semibold">Registrar movimiento</DialogTitle>
-        <DialogDescription className="text-xs text-muted-foreground">
+    <form onSubmit={onSubmit} className="space-y-5">
+      <div className="pr-8">
+        <DialogTitle className="text-base font-semibold tracking-tight">Registrar movimiento</DialogTitle>
+        <DialogDescription className="mt-1 text-[13px] text-muted-foreground">
           Genera una fila inmutable en el Kardex y actualiza el costo promedio.
         </DialogDescription>
       </div>
 
-      <div className="grid grid-cols-3 gap-1 rounded-md border p-0.5" role="tablist" aria-label="Tipo de movimiento">
+      <div className="grid grid-cols-3 gap-1 rounded-lg bg-muted p-1" role="tablist" aria-label="Tipo de movimiento">
         {MOVEMENT_TYPES.map((t) => (
           <button
             key={t}
@@ -103,8 +103,10 @@ function MovementForm({
             aria-selected={movementType === t}
             onClick={() => setMovementType(t)}
             className={
-              "h-7 rounded-sm text-xs font-medium transition-colors " +
-              (movementType === t ? "bg-primary text-primary-foreground" : "text-muted-foreground hover:bg-muted")
+              "h-8 rounded-md text-[13px] font-medium transition-colors " +
+              (movementType === t
+                ? "bg-background text-foreground shadow-[0_1px_2px_rgba(0,0,0,0.06)]"
+                : "text-muted-foreground hover:text-foreground")
             }
           >
             {MOVEMENT_LABELS[t]}
@@ -124,7 +126,7 @@ function MovementForm({
         {err("productId")}
       </div>
 
-      <div className="grid grid-cols-2 gap-3">
+      <div className="grid grid-cols-2 gap-4">
         <div>
           <Label htmlFor="mv-wh">Almacén</Label>
           <Select id="mv-wh" value={warehouseId} onChange={(e) => setWarehouseId(e.target.value)}>
@@ -148,7 +150,7 @@ function MovementForm({
         )}
       </div>
 
-      <div className="grid grid-cols-2 gap-3">
+      <div className="grid grid-cols-2 gap-4">
         <div>
           <Label htmlFor="mv-qty">
             Cantidad {product ? `(${product.unitOfMeasure})` : ""}
@@ -160,7 +162,7 @@ function MovementForm({
             autoFocus
             required
             placeholder="0"
-            className="text-right font-mono tabular-nums"
+            className="text-right tabular-nums"
           />
           {err("quantity")}
         </div>
@@ -172,16 +174,24 @@ function MovementForm({
             inputMode="decimal"
             disabled={!needsCost}
             placeholder={needsCost ? formatMoney(product?.averageCost ?? 0) : "CPP vigente"}
-            className="text-right font-mono tabular-nums"
+            className="text-right tabular-nums"
           />
           {err("unitCost")}
         </div>
       </div>
 
-      <p className="font-mono text-xs text-muted-foreground">
-        Disponible en almacén: {formatQty(available)} {product?.unitOfMeasure} · CPP:{" "}
-        {formatMoney(product?.averageCost ?? 0)}
-      </p>
+      <dl className="grid grid-cols-2 divide-x rounded-lg border text-[13px]">
+        <div className="px-3.5 py-2.5">
+          <dt className="text-xs text-muted-foreground">Disponible en almacén</dt>
+          <dd className="mt-0.5 font-medium tabular-nums">
+            {formatQty(available)} <span className="text-xs font-normal text-muted-foreground">{product?.unitOfMeasure}</span>
+          </dd>
+        </div>
+        <div className="px-3.5 py-2.5">
+          <dt className="text-xs text-muted-foreground">Costo promedio</dt>
+          <dd className="mt-0.5 font-medium tabular-nums">{formatMoney(product?.averageCost ?? 0)}</dd>
+        </div>
+      </dl>
 
       <div>
         <Label htmlFor="mv-note">Referencia</Label>
@@ -189,12 +199,12 @@ function MovementForm({
       </div>
 
       {error && (
-        <p role="alert" className="rounded-md border border-red-600/30 bg-red-50 px-2.5 py-1.5 text-xs text-red-800 dark:bg-red-950 dark:text-red-300">
+        <p role="alert" className="rounded-md bg-red-50 px-3 py-2 text-[13px] text-red-700 dark:bg-red-950 dark:text-red-300">
           {error}
         </p>
       )}
 
-      <div className="flex justify-end gap-2 pt-1">
+      <div className="-mx-6 flex justify-end gap-2 border-t px-6 pt-4">
         <Button variant="outline" onClick={onDone} disabled={pending}>
           Cancelar
         </Button>
