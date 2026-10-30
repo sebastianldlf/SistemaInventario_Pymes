@@ -6,7 +6,7 @@ const sans = Inter({ subsets: ["latin"], variable: "--font-sans" });
 const mono = JetBrains_Mono({ subsets: ["latin"], variable: "--font-mono" });
 
 export const metadata: Metadata = {
-  title: "Inventario y Kardex · PyMEs",
+  title: "Tarima · Inventario y Kardex para PyMEs",
   description: "Gestión de inventarios multi-almacén con Kardex y costo promedio ponderado.",
 };
 
