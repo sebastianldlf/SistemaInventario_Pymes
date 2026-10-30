@@ -102,7 +102,7 @@ export async function createProduct(
   }
   try {
     const p = await prisma.product.create({ data: parsed.data });
-    revalidatePath("/");
+    revalidatePath("/inventario");
     return { ok: true, data: { id: p.id } };
   } catch (e) {
     if (e instanceof Prisma.PrismaClientKnownRequestError && e.code === "P2002") {
@@ -207,7 +207,7 @@ export async function registerStockMovement(
       { maxWait: 5_000, timeout: 15_000 },
     );
 
-    revalidatePath("/");
+    revalidatePath("/inventario");
     return {
       ok: true,
       data: {

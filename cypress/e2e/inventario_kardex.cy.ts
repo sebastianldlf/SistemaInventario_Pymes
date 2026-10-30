@@ -3,7 +3,7 @@
 describe("Módulo de Control de Inventario y Kardex - E2E Tests", () => {
   beforeEach(() => {
     // Navegar a la vista principal del inventario
-    cy.visit("/");
+    cy.visit("/inventario");
   });
 
   it("Caso 1 (Flujo Positivo): Registro exitoso de entrada de mercancía por compra", () => {
