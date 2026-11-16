@@ -42,6 +42,7 @@ export function MovementSheet({ open, openId, onClose, onSaved, products, wareho
       <KeyboardAvoidingView style={styles.flex} behavior="padding">
         <Pressable style={styles.backdrop} onPress={onClose} accessibilityLabel="Cerrar" testID="mv-backdrop" />
         <View style={[styles.sheet, { paddingBottom: insets.bottom }]}>
+          <View style={styles.handle} />
           {open && (
             <MovementForm
               key={openId}
@@ -291,6 +292,7 @@ const styles = StyleSheet.create({
     borderTopLeftRadius: radius.xl,
     borderTopRightRadius: radius.xl,
   },
+  handle: { alignSelf: "center", width: 36, height: 4, borderRadius: 2, marginTop: 8, backgroundColor: colors.input },
   body: { padding: 20, gap: 18 },
   title: { fontSize: 16, fontWeight: "600", letterSpacing: -0.2, color: colors.foreground },
   description: { marginTop: 4, fontSize: 13, color: colors.mutedForeground },
@@ -321,13 +323,23 @@ const styles = StyleSheet.create({
   numeric: { textAlign: "right", fontVariant: ["tabular-nums"] },
   inputDisabled: { backgroundColor: colors.muted, opacity: 0.6 },
   fieldError: { marginTop: 6, fontSize: 12, color: colors.destructive },
-  summary: { flexDirection: "row", borderWidth: 1, borderColor: colors.border, borderRadius: radius.lg },
+  summary: { flexDirection: "row", borderWidth: 1, borderColor: colors.border, borderRadius: radius.lg, backgroundColor: colors.zinc50 },
   summaryCell: { flex: 1, paddingHorizontal: 14, paddingVertical: 10 },
   summaryDivider: { borderLeftWidth: 1, borderLeftColor: colors.border },
   summaryLabel: { fontSize: 12, color: colors.mutedForeground },
   summaryValue: { marginTop: 2, fontSize: 13, fontWeight: "500", color: colors.foreground, fontVariant: ["tabular-nums"] },
   summaryUnit: { fontSize: 12, fontWeight: "400", color: colors.mutedForeground },
-  alert: { borderRadius: radius.md, backgroundColor: colors.red50, paddingHorizontal: 12, paddingVertical: 8, fontSize: 13, color: colors.red700 },
+  alert: {
+    borderRadius: radius.md,
+    borderWidth: 1,
+    borderColor: "rgba(220,38,38,0.2)",
+    backgroundColor: colors.red50,
+    paddingHorizontal: 12,
+    paddingVertical: 10,
+    fontSize: 13,
+    lineHeight: 18,
+    color: colors.red700,
+  },
   footer: {
     flexDirection: "row",
     justifyContent: "flex-end",

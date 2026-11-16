@@ -64,19 +64,25 @@ La red Wi-Fi debe estar marcada como **Privada** en Windows.
 ```bash
 cd mobile
 npm install
-cp .env.example .env     # y edita EXPO_PUBLIC_API_URL
+cp .env.example .env     # puede quedar tal cual
 npx expo start           # escanea el QR con Expo Go (Android) o la cámara (iOS)
 ```
 
-`EXPO_PUBLIC_API_URL` según dónde corra la app:
+**La IP se detecta sola.** Con `EXPO_PUBLIC_API_URL` vacía, la app arma la URL con la IP de la PC que corre Metro (la misma que va en el QR, `Constants.expoConfig.hostUri`) y el puerto `EXPO_PUBLIC_API_PORT` (3002). Al cambiar de red Wi-Fi solo hay que reiniciar `npx expo start`. Ver `mobile/src/config.ts`.
 
-| Dónde | Valor |
+Define `EXPO_PUBLIC_API_URL` solo para forzar otra dirección:
+
+| Caso | Valor |
 |---|---|
-| Teléfono físico (Expo Go) | `http://<IP-LAN-del-PC>:3002` (IP con `ipconfig`, adaptador Wi-Fi) |
-| Emulador Android | `http://10.0.2.2:3002` |
-| Simulador iOS | `http://localhost:3002` |
+| Teléfono físico en la misma Wi-Fi | *(vacío, automático)* |
+| `npx expo start --tunnel` o red que aísla dispositivos | URL HTTPS del túnel de la API (ver abajo); el host de Metro sería el de ngrok |
+| Emulador Android | *(vacío)* o `http://10.0.2.2:3002` |
+| Simulador iOS | *(vacío)* o `http://localhost:3002` |
+| Backend en otra máquina | `http://<IP>:3002` |
 
-`localhost` no sirve desde el teléfono. Tras cambiar `.env`, reinicia con `npx expo start --clear`.
+Tras cambiar `.env`, reinicia con `npx expo start --clear`.
+
+Si la app muestra **"Error interno"**, el teléfono sí llegó al backend y el que falló fue el servidor (normalmente la base de datos: revisa la terminal de `next dev`). Si muestra **"No se pudo conectar con el servidor."**, el problema es la red o el firewall.
 
 ### Si iOS bloquea HTTP: túnel HTTPS
 

@@ -124,7 +124,7 @@ export default function InventoryScreen() {
         {offlineBars}
         <View style={styles.center} testID="error-red">
           <Text style={styles.emptyTitle}>{error}</Text>
-          <Text style={styles.emptyText}>{API_URL || "EXPO_PUBLIC_API_URL no está configurada"}</Text>
+          <Text style={styles.emptyText}>{API_URL ? `API: ${API_URL}` : "No se pudo detectar la dirección de la API. Define EXPO_PUBLIC_API_URL en mobile/.env."}</Text>
           <Button testID="btn-reintentar" title="Reintentar" variant="outline" onPress={() => reload("initial")} style={{ marginTop: 16 }} />
         </View>
       </SafeAreaView>
@@ -339,7 +339,7 @@ const styles = StyleSheet.create({
   statLabelRow: { flexDirection: "row", alignItems: "center", gap: 8 },
   dot: { width: 6, height: 6, borderRadius: 3 },
   statLabel: { fontSize: 13, color: colors.mutedForeground },
-  statValue: { marginTop: 8, fontSize: 24, fontWeight: "600", letterSpacing: -0.4, color: colors.foreground, fontVariant: ["tabular-nums"] },
+  statValue: { marginTop: 10, fontSize: 26, fontWeight: "600", letterSpacing: -0.4, color: colors.foreground, fontVariant: ["tabular-nums"] },
   statHint: { marginTop: 6, fontSize: 12, color: "rgba(113,113,122,0.8)" },
   filters: { gap: 10, paddingVertical: 20 },
   search: { justifyContent: "center" },
@@ -357,6 +357,7 @@ const styles = StyleSheet.create({
   },
   chipsRow: { flexDirection: "row", alignItems: "center", gap: 8 },
   chips: {
+    flex: 1,
     flexDirection: "row",
     borderWidth: 1,
     borderColor: colors.border,
@@ -364,9 +365,9 @@ const styles = StyleSheet.create({
     backgroundColor: colors.background,
     padding: 3,
   },
-  chip: { minHeight: TOUCH - 6, paddingHorizontal: 12, borderRadius: 5, justifyContent: "center" },
+  chip: { flex: 1, minHeight: TOUCH - 6, paddingHorizontal: 8, borderRadius: 5, alignItems: "center", justifyContent: "center" },
   chipActive: { backgroundColor: colors.zinc100 },
-  chipText: { fontSize: 13, fontWeight: "500", color: colors.mutedForeground },
+  chipText: { fontSize: 13, fontWeight: "500", color: colors.mutedForeground, textAlign: "center" },
   clear: { minHeight: TOUCH, paddingHorizontal: 8, justifyContent: "center" },
   clearText: { fontSize: 13, color: colors.mutedForeground, textDecorationLine: "underline" },
   empty: { paddingVertical: 64, alignItems: "center" },
