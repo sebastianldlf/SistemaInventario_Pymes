@@ -1,6 +1,7 @@
-node_modules/
-.next/
-out/
-build/
-.env*.local
-*.log
+backend/.env
+mobile/.env
+node_modules
+.next
+.expo
+.claude
+*.tsbuildinfo
