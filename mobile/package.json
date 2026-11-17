@@ -13,19 +13,36 @@
     "expo-router": "~58.0.31",
     "expo-status-bar": "~58.0.5",
     "react": "19.3.0",
+    "react-dom": "^19.3.0",
     "react-native": "0.88.1",
     "react-native-safe-area-context": "~5.11.1",
-    "react-native-screens": "~4.30.1"
+    "react-native-screens": "~4.30.1",
+    "react-native-web": "^0.21.4"
   },
   "devDependencies": {
+    "@cucumber/cucumber": "^13.3.0",
+    "@playwright/test": "^1.65.1",
     "@types/react": "~19.3.0",
-    "typescript": "~6.0.3"
+    "newman": "^6.2.3",
+    "tsx": "^4.23.15",
+    "typescript": "~6.0.3",
+    "vite": "^8.3.8",
+    "vitest": "^5.1.0"
   },
   "scripts": {
     "start": "expo start",
     "android": "expo start --android",
     "ios": "expo start --ios",
-    "web": "expo start --web"
+    "web": "expo start --web",
+    "typecheck": "tsc --noEmit",
+    "test": "npm run test:unit && npm run test:bdd && npm run test:api:mock",
+    "test:unit": "vitest run",
+    "test:p0": "vitest run -t \"\\[P0\"",
+    "test:bdd": "tsx node_modules/@cucumber/cucumber/bin/cucumber.js",
+    "test:bdd:p0": "tsx node_modules/@cucumber/cucumber/bin/cucumber.js --tags \"@P0\"",
+    "test:api": "newman run tests/postman/tarima-mobile-api.postman_collection.json -e tests/postman/local.postman_environment.json --reporters cli,junit --reporter-junit-export reports/junit/newman-junit.xml",
+    "test:api:mock": "node tests/postman/run-with-mock.mjs",
+    "test:e2e": "playwright test"
   },
   "private": true
 }
