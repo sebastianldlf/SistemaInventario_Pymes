@@ -1,0 +1,48 @@
+{
+  "name": "tarima-mobile",
+  "version": "1.0.0",
+  "main": "expo-router/entry",
+  "dependencies": {
+    "@expo/vector-icons": "^15.0.2",
+    "@react-native-async-storage/async-storage": "2.2.0",
+    "@react-native-community/netinfo": "12.0.1",
+    "expo": "~58.0.25",
+    "expo-constants": "~58.0.16",
+    "expo-font": "~58.0.12",
+    "expo-linking": "~58.0.17",
+    "expo-router": "~58.0.31",
+    "expo-status-bar": "~58.0.5",
+    "react": "19.3.0",
+    "react-dom": "^19.3.0",
+    "react-native": "0.88.1",
+    "react-native-safe-area-context": "~5.11.1",
+    "react-native-screens": "~4.30.1",
+    "react-native-web": "^0.21.4"
+  },
+  "devDependencies": {
+    "@cucumber/cucumber": "^13.3.0",
+    "@playwright/test": "^1.65.1",
+    "@types/react": "~19.3.0",
+    "newman": "^6.2.3",
+    "tsx": "^4.23.15",
+    "typescript": "~6.0.3",
+    "vite": "^8.3.8",
+    "vitest": "^5.1.0"
+  },
+  "scripts": {
+    "start": "expo start",
+    "android": "expo start --android",
+    "ios": "expo start --ios",
+    "web": "expo start --web",
+    "typecheck": "tsc --noEmit",
+    "test": "npm run test:unit && npm run test:bdd && npm run test:api:mock",
+    "test:unit": "vitest run",
+    "test:p0": "vitest run -t \"\\[P0\"",
+    "test:bdd": "tsx node_modules/@cucumber/cucumber/bin/cucumber.js",
+    "test:bdd:p0": "tsx node_modules/@cucumber/cucumber/bin/cucumber.js --tags \"@P0\"",
+    "test:api": "newman run tests/postman/tarima-mobile-api.postman_collection.json -e tests/postman/local.postman_environment.json --reporters cli,junit --reporter-junit-export reports/junit/newman-junit.xml",
+    "test:api:mock": "node tests/postman/run-with-mock.mjs",
+    "test:e2e": "playwright test"
+  },
+  "private": true
+}

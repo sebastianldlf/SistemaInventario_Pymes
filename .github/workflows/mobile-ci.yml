@@ -1,0 +1,117 @@
+name: Mobile CI/CD (TDD, BDD/ATDD, Postman+Newman, Playwright)
+
+on:
+  push:
+    branches: [main, master, develop]
+    paths:
+      - "mobile/**"
+      - ".github/workflows/mobile-ci.yml"
+  pull_request:
+    paths:
+      - "mobile/**"
+      - ".github/workflows/mobile-ci.yml"
+  workflow_dispatch:
+
+defaults:
+  run:
+    working-directory: mobile
+
+jobs:
+  # Stage 1: Gate rápido de calidad (Typecheck + TDD Unit P0/P1 + BDD/ATDD)
+  quality-and-tdd-bdd:
+    name: Typecheck, TDD Unit & BDD/ATDD
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: "npm"
+          cache-dependency-path: mobile/package-lock.json
+
+      - name: Install dependencies
+        run: npm ci --legacy-peer-deps
+
+      - name: TypeScript typecheck
+        run: npm run typecheck
+
+      - name: Run TDD Unit Tests (Vitest + JUnit XML)
+        run: npm run test:unit
+
+      - name: Run BDD/ATDD Scenarios (Cucumber + JUnit XML)
+        run: npm run test:bdd
+
+      - name: Upload Unit & BDD JUnit Reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: mobile-unit-bdd-junit
+          path: |
+            mobile/reports/junit/unit-junit.xml
+            mobile/reports/junit/bdd-junit.xml
+
+  # Stage 2: Pruebas de contrato API (Postman + Newman)
+  api-contract-newman:
+    name: API Contract Tests (Postman + Newman)
+    runs-on: ubuntu-latest
+    needs: quality-and-tdd-bdd
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: "npm"
+          cache-dependency-path: mobile/package-lock.json
+
+      - name: Install dependencies
+        run: npm ci --legacy-peer-deps
+
+      - name: Run Postman Collection via Newman (with contract mock server)
+        run: npm run test:api:mock
+
+      - name: Upload Newman JUnit Report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: mobile-newman-junit
+          path: mobile/reports/junit/newman-junit.xml
+
+  # Stage 3: Pruebas E2E UI Móvil (Playwright en Expo Web)
+  e2e-playwright:
+    name: E2E Mobile Viewport (Playwright)
+    runs-on: ubuntu-latest
+    needs: quality-and-tdd-bdd
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: "npm"
+          cache-dependency-path: mobile/package-lock.json
+
+      - name: Install dependencies
+        run: npm ci --legacy-peer-deps
+
+      - name: Install Playwright Chromium
+        run: npx playwright install --with-deps chromium
+
+      - name: Run Playwright E2E Tests
+        run: npm run test:e2e
+
+      - name: Upload Playwright Reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: mobile-playwright-reports
+          path: |
+            mobile/reports/junit/playwright-junit.xml
+            mobile/reports/playwright-html/
